@@ -91,7 +91,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>D:\Programming\C++\_libraries\SDL2-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,6 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Programming\C++\_libraries\SDL2-2.0.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,18 +151,24 @@
     <ClCompile Include="intersectable.cpp" />
     <ClCompile Include="intersection.cpp" />
     <ClCompile Include="kansoku.cpp" />
+    <ClCompile Include="plane.cpp" />
     <ClCompile Include="primitive.cpp" />
     <ClCompile Include="ray3.cpp" />
+    <ClCompile Include="triangle.cpp" />
     <ClCompile Include="vec3.cpp" />
+    <ClCompile Include="world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="box.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="intersectable.h" />
     <ClInclude Include="intersection.h" />
+    <ClInclude Include="plane.h" />
     <ClInclude Include="primitive.h" />
     <ClInclude Include="ray3.h" />
+    <ClInclude Include="triangle.h" />
     <ClInclude Include="vec3.h" />
+    <ClInclude Include="world.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2.dll" />

@@ -6,8 +6,9 @@ ray3::ray3()
 {
 }
 
-ray3::ray3(vec3 pos, vec3 dir) :pos(pos), dir(dir)
+ray3::ray3(vec3 _pos, vec3 _dir) : pos(_pos), dir(_dir)
 {
+	dir.normalize();
 }
 
 ray3::ray3(const ray3& other)

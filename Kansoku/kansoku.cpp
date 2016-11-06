@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <SDL.h>
 #include "constants.h"
+#include "world.h"
 
 SDL_Window *window = NULL;
 SDL_Surface *screen = NULL;
@@ -30,6 +31,17 @@ bool close() {
 
 int main(int argc, char* argv[])
 {
+	world w;
+	w.a_rectangle(vec3(-10, 10, 10), vec3(10, -10, 10), { 255, 165, 0, 255 });
+	ray3 ray(vec3(0, 0, 0), vec3(0, 1, 1));
+	printf("%f %f %f\n", ray.dir.x, ray.dir.y, ray.dir.z);
+	intersection *its = w.min_intersection(ray);
+	if (its)
+		printf("%f\n", its->distance);
+	else
+		printf("no hit\n");
+
+	/*
 	if (!init()) {
 		printf("Failed to initialize SDL!");
 		exit(1);
@@ -46,6 +58,6 @@ int main(int argc, char* argv[])
 		SDL_RenderPresent(renderer);
 		SDL_Delay(16);
 	} while (!quit);
-	close();
+	close();*/
 	return 0;
 }

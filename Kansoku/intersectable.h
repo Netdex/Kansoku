@@ -5,6 +5,6 @@ struct intersectable
 {
 	intersectable();
 	virtual ~intersectable();
-	virtual intersection get_intersection(ray3 &ray) = 0;
+	virtual intersection get_intersection(const ray3 &ray) = 0;
 };
 

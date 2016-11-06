@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL.h>
 
-struct box;
 struct intersectable;
 
 #include "ray3.h"

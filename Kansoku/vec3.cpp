@@ -49,7 +49,9 @@ vec3::~vec3()
 void vec3::normalize()
 {
 	float len = length();
-	*this = *this / len;
+	x /= len;
+	y /= len;
+	z /= len;
 }
 
 void vec3::set(vec3& o)
@@ -106,7 +108,7 @@ float vec3::dot(const vec3& a, const vec3& b)
 
 vec3 vec3::cross(const vec3& a, const vec3& b)
 {
-	return vec3(a.y * b.y - b.y * a.z, a.z * b.x - b.z + a.x, a.x * b.y - b.x * a.y);
+	return vec3(a.y * b.z - b.y * a.z, a.z * b.x - b.z * a.x, a.x * b.y - b.x * a.y);
 }
 
 void vec3::rot_z(float theta)
