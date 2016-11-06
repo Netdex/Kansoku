@@ -1,6 +1,6 @@
 #pragma once
+#include <SDL.h>
 #include "primitive.h"
-#include "intersection.h"
 
 struct box : primitive
 {
@@ -9,7 +9,7 @@ struct box : primitive
 	box(vec3 minbound, vec3 maxbound, SDL_Color color);
 	~box();
 
-	bool operator==(const primitive &o) const override;
-	intersection get_intersection(ray3 &ray) const override;
+	bool operator==(const primitive &o) override;
+	intersection get_intersection(ray3 &ray) override;
 };
 

@@ -9,6 +9,6 @@ struct primitive : intersectable
 	primitive(SDL_Color color);
 	virtual ~primitive();
 
-	virtual bool operator==(const primitive &o) const = 0;
+	virtual bool operator==(const primitive &o) = 0;
 };
 

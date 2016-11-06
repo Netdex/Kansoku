@@ -13,7 +13,7 @@ box::~box()
 {
 }
 
-bool box::operator==(const primitive& o) const
+bool box::operator==(const primitive& o)
 {
 	const box *op = dynamic_cast<const box*>(&o);
 	if(op)
@@ -21,13 +21,12 @@ bool box::operator==(const primitive& o) const
 	return false;
 }
 
-intersection box::get_intersection(ray3& r) const
+intersection box::get_intersection(ray3& r)
 {
 	float tmin, tmax, tymin, tymax, tzmin, tzmax;
 
 	vec3 invdir = vec3(1 / r.dir.x, 1 / r.dir.y, 1 / r.dir.z);
-	int sign[] = { invdir.x < 0 ? 1 : 0,
-		invdir.y < 0 ? 1 : 0, invdir.z < 0 ? 1 : 0};
+	int sign[] = { invdir.x < 0 ? 1 : 0, invdir.y < 0 ? 1 : 0, invdir.z < 0 ? 1 : 0};
 
 	tmin = (bounds[sign[0]].x - r.pos.x) * invdir.x;
 	tmax = (bounds[1 - sign[0]].x - r.pos.x) * invdir.x;
@@ -35,7 +34,8 @@ intersection box::get_intersection(ray3& r) const
 	tymax = (bounds[1 - sign[1]].y - r.pos.y) * invdir.y;
 
 	if ((tmin > tymax) || (tymin > tmax))
-		return NO_INTERSECTION;
+		return intersection(r, r.get_point(tmin), *this, -1, this->color);
+
 	if (tymin > tmin)
 		tmin = tymin;
 	if (tymax < tmax)
@@ -45,13 +45,15 @@ intersection box::get_intersection(ray3& r) const
 	tzmax = (bounds[1 - sign[2]].z - r.pos.z) * invdir.z;
 
 	if ((tmin > tzmax) || (tzmin > tmax))
-		return NO_INTERSECTION;
+		return intersection(r, r.get_point(tmin), *this, -1, this->color);
+
 	if (tzmin > tmin)
 		tmin = tzmin;
 	if (tzmax < tmax)
 		tmax = tzmax;
 
 	if (tmin < 0)
-		return NO_INTERSECTION;
-	return intersection(r, r.get_point(tmin), this, tmin, this->color);
+		return intersection(r, r.get_point(tmin), *this, -1, this->color);
+
+	return intersection(r, r.get_point(tmin), *this, tmin, this->color);
 }

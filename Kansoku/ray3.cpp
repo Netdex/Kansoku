@@ -1,4 +1,5 @@
 #include "ray3.h"
+#include <algorithm>
 
 
 ray3::ray3()

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string>
-
 struct vec3
 {
 	float x, y, z;
