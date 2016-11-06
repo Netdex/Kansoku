@@ -12,7 +12,7 @@ struct vec3
 	vec3& operator=(vec3&& other) noexcept;
 	~vec3();
 
-	void normalize();
+	vec3& normalize();
 	void set(vec3 &o);
 	float length() const;
 	float length_sq() const;

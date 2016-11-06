@@ -9,10 +9,10 @@ struct intersection
 {
 	ray3 ray;
 	vec3 point;	
-	const intersectable& object; 
+	const intersectable* object; 
 	float distance;
 	SDL_Color color;
 
-	intersection(ray3 ray, vec3 point, const intersectable &object, float distance, SDL_Color color);
+	intersection(ray3 ray, vec3 point, const intersectable *object, float distance, SDL_Color color);
 	~intersection();
 };

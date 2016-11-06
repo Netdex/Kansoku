@@ -25,21 +25,21 @@ intersection triangle::get_intersection(const ray3& r)
 
 	float det = vec3::dot(v0v1, pvec);
 	if (abs(det) < 0.00001f)
-		return intersection(r, r.pos, *this, -1, color);
+		return intersection(r, r.pos, this, -1, color);
 	float invDet = 1 / det;
 
 	vec3 tvec = r.pos - a;
 	float u = vec3::dot(tvec, pvec) * invDet;
 	if (u < 0 || u > 1)
-		return intersection(r, r.pos, *this, -1, color);
+		return intersection(r, r.pos, this, -1, color);
 
 	vec3 qvec = vec3::cross(tvec, v0v1);
 	float v = vec3::dot(r.dir, qvec) * invDet;
 	if (v < 0 || u + v > 1)
-		return intersection(r, r.pos, *this, -1, color);
+		return intersection(r, r.pos, this, -1, color);
 
 	float t = vec3::dot(v0v2, qvec) * invDet;
 	if (t < 0)
-		return intersection(r, r.pos, *this, -1, color);
-	return intersection(r, r.get_point(t), *this, t, color);
+		return intersection(r, r.pos, this, -1, color);
+	return intersection(r, r.get_point(t), this, t, color);
 }

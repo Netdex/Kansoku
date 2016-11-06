@@ -34,7 +34,7 @@ intersection box::get_intersection(const ray3& r)
 	tymax = (bounds[1 - sign[1]].y - r.pos.y) * invdir.y;
 
 	if ((tmin > tymax) || (tymin > tmax))
-		return intersection(r, r.pos, *this, -1, this->color);
+		return intersection(r, r.pos, this, -1, this->color);
 
 	if (tymin > tmin)
 		tmin = tymin;
@@ -45,7 +45,7 @@ intersection box::get_intersection(const ray3& r)
 	tzmax = (bounds[1 - sign[2]].z - r.pos.z) * invdir.z;
 
 	if ((tmin > tzmax) || (tzmin > tmax))
-		return intersection(r, r.pos, *this, -1, this->color);
+		return intersection(r, r.pos, this, -1, this->color);
 
 	if (tzmin > tmin)
 		tmin = tzmin;
@@ -53,7 +53,7 @@ intersection box::get_intersection(const ray3& r)
 		tmax = tzmax;
 
 	if (tmin < 0)
-		return intersection(r, r.pos, *this, -1, this->color);
+		return intersection(r, r.pos, this, -1, this->color);
 
-	return intersection(r, r.get_point(tmin), *this, tmin, this->color);
+	return intersection(r, r.get_point(tmin), this, tmin, this->color);
 }

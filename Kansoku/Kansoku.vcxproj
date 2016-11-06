@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="box.cpp" />
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="intersectable.cpp" />
     <ClCompile Include="intersection.cpp" />
     <ClCompile Include="kansoku.cpp" />
@@ -160,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="box.h" />
+    <ClInclude Include="camera.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="intersectable.h" />
     <ClInclude Include="intersection.h" />

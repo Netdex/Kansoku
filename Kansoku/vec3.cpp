@@ -46,12 +46,13 @@ vec3::~vec3()
 {
 }
 
-void vec3::normalize()
+vec3& vec3::normalize()
 {
 	float len = length();
 	x /= len;
 	y /= len;
 	z /= len;
+	return *this;
 }
 
 void vec3::set(vec3& o)
@@ -113,20 +114,26 @@ vec3 vec3::cross(const vec3& a, const vec3& b)
 
 void vec3::rot_z(float theta)
 {
-	x = x * cos(theta) - y * sin(theta);
-	y = x * sin(theta) + y * cos(theta);
+	float nx = x * cos(theta) - y * sin(theta);
+	float ny = x * sin(theta) + y * cos(theta);
+	x = nx;
+	y = ny;
 }
 
 void vec3::rot_y(float theta)
 {
-	x = x * cos(theta) + z * sin(theta);
-	z = -x * sin(theta) + z * cos(theta);
+	float nx = x * cos(theta) + z * sin(theta);
+	float nz = -x * sin(theta) + z * cos(theta);
+	x = nx;
+	z = nz;
 }
 
 void vec3::rot_x(float theta)
 {
-	y = y * cos(theta) - z * sin(theta);
-	z = y * sin(theta) + z * cos(theta);
+	float ny = y * cos(theta) - z * sin(theta);
+	float nz = y * sin(theta) + z * cos(theta);
+	y = ny;
+	z = nz;
 }
 
 float vec3::get_ang_z() const
@@ -163,8 +170,11 @@ void vec3::rotate_axis(vec3& axis, float angle)
 	float q3 = coeff * axis.z;
 
 	float s = q1 * x + q2 * y + q3 * z;
-	x = 2 * (q0 * (x * q0 - (q2 * z - q3 * y)) + s * q1) - x;
-	y = 2 * (q0 * (y * q0 - (q3 * x - q1 * z)) + s * q2) - y;
-	z = 2 * (q0 * (z * q0 - (q1 * y - q2 * x)) + s * q3) - z;
+	float nx = 2 * (q0 * (x * q0 - (q2 * z - q3 * y)) + s * q1) - x;
+	float ny = 2 * (q0 * (y * q0 - (q3 * x - q1 * z)) + s * q2) - y;
+	float nz = 2 * (q0 * (z * q0 - (q1 * y - q2 * x)) + s * q3) - z;
+	x = nx;
+	y = ny;
+	z = nz;
 }
 

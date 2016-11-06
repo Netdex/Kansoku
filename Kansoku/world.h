@@ -12,7 +12,7 @@ public:
 	world();
 	~world();
 
-	void a_rectangle(vec3 topleft, vec3 bottomright, SDL_Color color);
+	void a_rectangle(const vec3 &topleft, const vec3 &bottomright, const SDL_Color &color);
 	intersection min_intersection(const ray3 &r);
 };
 

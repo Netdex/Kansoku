@@ -3,6 +3,10 @@
 #include <SDL.h>
 #include "constants.h"
 #include "world.h"
+#include "camera.h"
+#include <cmath>
+#include "box.h"
+#include "plane.h"
 
 SDL_Window *window = NULL;
 SDL_Surface *screen = NULL;
@@ -32,20 +36,21 @@ bool close() {
 int main(int argc, char* argv[])
 {
 	world w;
-	w.a_rectangle(vec3(-10, 10, 10), vec3(10, -10, 10), { 255, 165, 0, 255 });
-	ray3 ray(vec3(0, 0, 0), vec3(0, 1, 1));
-	printf("%f %f %f\n", ray.dir.x, ray.dir.y, ray.dir.z);
-	intersection *its = w.min_intersection(ray);
-	if (its)
-		printf("%f\n", its->distance);
-	else
-		printf("no hit\n");
+	w.a_rectangle(vec3(-1, 1, 10), vec3(1, -1, 10), { 255, 255, 255, 255 });
+	plane p(ray3(vec3(), vec3(0, -1, 0)), { 0, 255, 0, 255 });
+	w.intersects.push_back(&p);
+	//w.intersects.push_back(&p);
+	camera c(w, vec3(0, 0, 0), vec3(0, 0, 1), { 0x00, 0x22, 0xFF, 0xFF },
+		PIXEL_WIDTH, PIXEL_HEIGHT, PIXEL_SIZE);
 
-	/*
 	if (!init()) {
 		printf("Failed to initialize SDL!");
 		exit(1);
 	}
+
+	vec3 MOVE_SPEED = vec3(.1, 0, .1);
+
+	const Uint8 *state;
 	SDL_Event e;
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(renderer);
@@ -55,9 +60,58 @@ int main(int argc, char* argv[])
 				quit = true;
 			}
 		}
+
+		state = SDL_GetKeyboardState(NULL);
+
+		vec3 dir = c._forward;
+		dir.normalize();
+		dir = dir * MOVE_SPEED;
+		
+		if (state[SDL_SCANCODE_W]) {
+			c._pos = c._pos + dir;
+		}
+		if (state[SDL_SCANCODE_S]) {
+			c._pos = c._pos - dir;
+		}
+		if (state[SDL_SCANCODE_A]) {
+			vec3 dd = dir;
+			dd.rot_y(M_PI / 2.0f);
+			c._pos = c._pos - dd;
+		}
+		if (state[SDL_SCANCODE_D]) {
+			vec3 dd = dir;
+			dd.rot_y(-M_PI / 2.0f);
+			c._pos = c._pos - dd;
+		}
+		if (state[SDL_SCANCODE_SPACE]) {
+			vec3 dd = vec3(0, 0.1, 0);
+			c._pos = c._pos + dd;
+		}
+		if (state[SDL_SCANCODE_LSHIFT]) {
+			vec3 dd = vec3(0, 0.1, 0);
+			c._pos = c._pos - dd;
+		}
+		if (state[SDL_SCANCODE_UP]) {
+			vec3 dd = vec3::cross(c._forward, c.DOWN);
+			c._forward.rotate_axis(dd, -0.05);
+		}
+		if (state[SDL_SCANCODE_DOWN]) {
+			vec3 dd = vec3::cross(c._forward, c.DOWN);
+			c._forward.rotate_axis(dd, 0.05);
+		}
+		if (state[SDL_SCANCODE_LEFT]) {
+			c._forward.rot_y(-0.05);
+		}
+		if (state[SDL_SCANCODE_RIGHT]) {
+			c._forward.rot_y(0.05);
+		}
+		
+		printf("%f %f %f | %f %f %f                      \r", c._pos.x, c._pos.y, c._pos.z, 
+			c._forward.get_ang_x() * 180 / M_PI, c._forward.get_ang_y() * 180 / M_PI, c._forward.get_ang_z() * 180 / M_PI);
+		c.render(renderer);
 		SDL_RenderPresent(renderer);
 		SDL_Delay(16);
 	} while (!quit);
-	close();*/
+	close();
 	return 0;
 }
