@@ -1,7 +1,9 @@
 #include "ray3.h"
 
 
-
+ray3::ray3()
+{
+}
 
 ray3::ray3(vec3 pos, vec3 dir) :pos(pos), dir(dir)
 {

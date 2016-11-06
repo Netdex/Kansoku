@@ -39,8 +39,14 @@
     <ClCompile Include="intersectable.cpp">
       <Filter>Source Files\primitive</Filter>
     </ClCompile>
+    <ClCompile Include="box.cpp">
+      <Filter>Source Files\primitive</Filter>
+    </ClCompile>
     <ClCompile Include="primitive.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="intersection.cpp">
+      <Filter>Source Files\construct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -56,15 +62,21 @@
     <ClInclude Include="intersectable.h">
       <Filter>Header Files\primitive</Filter>
     </ClInclude>
+    <ClInclude Include="box.h">
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
     <ClInclude Include="primitive.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="intersection.h">
+      <Filter>Header Files\construct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="SDL2.lib" />
-    <Library Include="SDL2main.lib" />
+    <Library Include="..\..\_libraries\SDL2-2.0.5\lib\x86\SDL2.lib" />
+    <Library Include="..\..\_libraries\SDL2-2.0.5\lib\x86\SDL2main.lib" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,14 @@
 #pragma once
 #include "intersectable.h"
+#include <SDL.h>
 
-class primitive : intersectable
+struct primitive : intersectable
 {
-public:
-	primitive();
-	~primitive();
+	SDL_Color color;
+
+	primitive(SDL_Color color);
+	virtual ~primitive();
+
+	virtual bool operator==(const primitive &o) const = 0;
 };
 

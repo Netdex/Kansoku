@@ -2,7 +2,7 @@
 
 
 
-primitive::primitive()
+primitive::primitive(SDL_Color color) : color(color)
 {
 }
 

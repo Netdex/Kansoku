@@ -1,12 +1,10 @@
 #pragma once
-class ray3;
+#include "intersection.h"
 
-class intersectable
+struct intersectable
 {
-public:
 	intersectable();
 	virtual ~intersectable();
-
-	virtual void get_intersection(ray3 &ray) = 0;
+	virtual intersection get_intersection(ray3 &ray) const = 0;
 };
 

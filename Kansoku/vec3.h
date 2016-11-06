@@ -2,9 +2,8 @@
 
 #include <string>
 
-class vec3
+struct vec3
 {
-public:
 	float x, y, z;
 
 	vec3();
@@ -25,6 +24,7 @@ public:
 	vec3 operator/(float d) const;
 	vec3 operator*(const vec3 &o) const;
 	vec3 operator*(float d) const;
+	bool operator==(const vec3 &o) const;
 
 	static float dot(const vec3 &a, const vec3 &b);
 	static vec3 cross(const vec3 &a, const vec3 &b);
@@ -37,10 +37,6 @@ public:
 	float get_ang_x() const;
 	vec3 get_rot_vec() const;
 	void rotate_axis(vec3 &axis, float angle);
-
-	vec3 to_degrees();
-
-	std::string to_string();
 
 };
 

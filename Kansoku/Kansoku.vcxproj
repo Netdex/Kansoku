@@ -146,15 +146,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="box.cpp" />
     <ClCompile Include="intersectable.cpp" />
+    <ClCompile Include="intersection.cpp" />
     <ClCompile Include="kansoku.cpp" />
     <ClCompile Include="primitive.cpp" />
     <ClCompile Include="ray3.cpp" />
     <ClCompile Include="vec3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="box.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="intersectable.h" />
+    <ClInclude Include="intersection.h" />
     <ClInclude Include="primitive.h" />
     <ClInclude Include="ray3.h" />
     <ClInclude Include="vec3.h" />
@@ -163,8 +167,8 @@
     <None Include="SDL2.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="SDL2.lib" />
-    <Library Include="SDL2main.lib" />
+    <Library Include="..\..\_libraries\SDL2-2.0.5\lib\x86\SDL2.lib" />
+    <Library Include="..\..\_libraries\SDL2-2.0.5\lib\x86\SDL2main.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -94,6 +94,11 @@ vec3 vec3::operator*(float d) const
 	return vec3(x * d, y * d, z * d);
 }
 
+bool vec3::operator==(const vec3& o) const
+{
+	return x == o.x && y == o.y && z == o.z;
+}
+
 float vec3::dot(const vec3& a, const vec3& b)
 {
 	return a.x * b.x + a.y * b.y + a.z * b.z;
