@@ -10,11 +10,13 @@ public:
 	const float SHADOW_RENDER_EPSILON = 0.01;
 	const float FOV = 1.5f;
 
-	const int PIXEL_WIDTH;
-	const int PIXEL_HEIGHT;
-	const int PIXEL_SIZE;
-	const int WINDOW_WIDTH;
-	const int WINDOW_HEIGHT;
+	const int p_width;
+	const int p_height;
+	const int p_size;
+	const int w_width;
+	const int w_height;
+	const int w_center_x;
+	const int w_center_y;
 
 	world _world;
 	vec3 _pos;

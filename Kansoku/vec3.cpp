@@ -97,6 +97,41 @@ vec3 vec3::operator*(float d) const
 	return vec3(x * d, y * d, z * d);
 }
 
+void vec3::operator+=(const vec3& o)
+{
+	x += o.x;
+	y += o.y;
+	z += o.z;
+}
+
+void vec3::operator-=(const vec3& o)
+{
+	x -= o.x;
+	y -= o.y;
+	z -= o.z;
+}
+
+void vec3::operator/=(float d)
+{
+	x /= d;
+	y /= d;
+	z /= d;
+}
+
+void vec3::operator*=(const vec3& o)
+{
+	x *= o.x;
+	y *= o.y;
+	z *= o.z;
+}
+
+void vec3::operator*=(float d)
+{
+	x *= d;
+	y *= d;
+	z *= d;
+}
+
 bool vec3::operator==(const vec3& o) const
 {
 	return x == o.x && y == o.y && z == o.z;

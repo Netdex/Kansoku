@@ -1,12 +1,13 @@
 #include <cstdlib>
 #include <cstdio>
+#include <ctime>
 #include <SDL.h>
 #include "constants.h"
 #include "world.h"
 #include "camera.h"
-#include <cmath>
 #include "box.h"
 #include "plane.h"
+#include <algorithm>
 
 SDL_Window *window = NULL;
 SDL_Surface *screen = NULL;
@@ -22,6 +23,8 @@ bool init() {
 	screen = SDL_GetWindowSurface(window);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+	SDL_ShowCursor(0);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	return true;
 }
 
@@ -33,14 +36,61 @@ bool close() {
 	return true;
 }
 
+const vec3 MOVE_SPEED = vec3(.1, 0, .1);
+void handle_input(camera &c, const Uint8 *state)
+{
+	vec3 dir = c._forward;
+	dir.normalize();
+	dir *= MOVE_SPEED;
+
+	if (state[SDL_SCANCODE_W]) {
+		c._pos += dir;
+	}
+	if (state[SDL_SCANCODE_S]) {
+		c._pos -= dir;
+	}
+	if (state[SDL_SCANCODE_A]) {
+		vec3 dd = dir;
+		dd.rot_y(M_PI / 2.0f);
+		c._pos -= dd;
+	}
+	if (state[SDL_SCANCODE_D]) {
+		vec3 dd = dir;
+		dd.rot_y(-M_PI / 2.0f);
+		c._pos -= dd;
+	}
+	if (state[SDL_SCANCODE_SPACE]) {
+		vec3 dd = vec3(0, 0.1, 0);
+		c._pos += dd;
+	}
+	if (state[SDL_SCANCODE_LSHIFT]) {
+		vec3 dd = vec3(0, 0.1, 0);
+		c._pos -= dd;
+	}
+
+	int x, y;
+	SDL_GetRelativeMouseState(&x, &y);
+	if (x != 0)
+	{
+		vec3 dd = vec3::cross(c._forward, c.DOWN);
+		c._forward.rotate_axis(dd, 0.005 * y);
+	}
+	if (y != 0)
+	{
+		c._forward.rot_y(0.005 * x);
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	world w;
 	w.a_rectangle(vec3(-1, 1, 10), vec3(1, -1, 10), { 255, 255, 255, 255 });
 	plane p(ray3(vec3(), vec3(0, -1, 0)), { 0, 255, 0, 255 });
 	w.intersects.push_back(&p);
-	//w.intersects.push_back(&p);
-	camera c(w, vec3(0, 0, 0), vec3(0, 0, 1), { 0x00, 0x22, 0xFF, 0xFF },
+	box b(vec3(-10 + 20, -10 + 10, -10), vec3(10 + 20, 10 + 10, 10), { 255,0,0,255 });
+	w.intersects.push_back(&b);
+
+	camera c(w, vec3(0, 0, 0), vec3(0, 0, 1), { 120, 120, 255, 255 },
 		PIXEL_WIDTH, PIXEL_HEIGHT, PIXEL_SIZE);
 
 	if (!init()) {
@@ -48,13 +98,13 @@ int main(int argc, char* argv[])
 		exit(1);
 	}
 
-	vec3 MOVE_SPEED = vec3(.1, 0, .1);
-
 	const Uint8 *state;
+
 	SDL_Event e;
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 	SDL_RenderClear(renderer);
 	do {
+		int start = SDL_GetTicks();
 		while (SDL_PollEvent(&e) != 0) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
@@ -62,55 +112,26 @@ int main(int argc, char* argv[])
 		}
 
 		state = SDL_GetKeyboardState(NULL);
+		handle_input(c, state);
 
-		vec3 dir = c._forward;
-		dir.normalize();
-		dir = dir * MOVE_SPEED;
-		
-		if (state[SDL_SCANCODE_W]) {
-			c._pos = c._pos + dir;
-		}
-		if (state[SDL_SCANCODE_S]) {
-			c._pos = c._pos - dir;
-		}
-		if (state[SDL_SCANCODE_A]) {
-			vec3 dd = dir;
-			dd.rot_y(M_PI / 2.0f);
-			c._pos = c._pos - dd;
-		}
-		if (state[SDL_SCANCODE_D]) {
-			vec3 dd = dir;
-			dd.rot_y(-M_PI / 2.0f);
-			c._pos = c._pos - dd;
-		}
-		if (state[SDL_SCANCODE_SPACE]) {
-			vec3 dd = vec3(0, 0.1, 0);
-			c._pos = c._pos + dd;
-		}
-		if (state[SDL_SCANCODE_LSHIFT]) {
-			vec3 dd = vec3(0, 0.1, 0);
-			c._pos = c._pos - dd;
-		}
-		if (state[SDL_SCANCODE_UP]) {
-			vec3 dd = vec3::cross(c._forward, c.DOWN);
-			c._forward.rotate_axis(dd, -0.05);
-		}
-		if (state[SDL_SCANCODE_DOWN]) {
-			vec3 dd = vec3::cross(c._forward, c.DOWN);
-			c._forward.rotate_axis(dd, 0.05);
-		}
-		if (state[SDL_SCANCODE_LEFT]) {
-			c._forward.rot_y(-0.05);
-		}
-		if (state[SDL_SCANCODE_RIGHT]) {
-			c._forward.rot_y(0.05);
-		}
-		
-		printf("%f %f %f | %f %f %f                      \r", c._pos.x, c._pos.y, c._pos.z, 
+		printf("P[%f, %f, %f] | D[%f, %f, %f]   ", c._pos.x, c._pos.y, c._pos.z,
 			c._forward.get_ang_x() * 180 / M_PI, c._forward.get_ang_y() * 180 / M_PI, c._forward.get_ang_z() * 180 / M_PI);
+
+		clock_t begin = clock();
 		c.render(renderer);
+		clock_t end = clock();
+		double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+		printf("E%fs          \r", elapsed_secs);
+
 		SDL_RenderPresent(renderer);
-		SDL_Delay(16);
+
+		int time = SDL_GetTicks() - start;
+		if (time < 0) continue;
+		int sleepTime = 16 - time;
+		if (sleepTime > 0)
+		{
+			SDL_Delay(sleepTime);
+		}
 	} while (!quit);
 	close();
 	return 0;

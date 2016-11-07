@@ -22,6 +22,11 @@ struct vec3
 	vec3 operator/(float d) const;
 	vec3 operator*(const vec3 &o) const;
 	vec3 operator*(float d) const;
+	void operator+=(const vec3 &o) ;
+	void operator-=(const vec3 &o) ;
+	void operator/=(float d) ;
+	void operator*=(const vec3 &o) ;
+	void operator*=(float d) ;
 	bool operator==(const vec3 &o) const;
 
 	static float dot(const vec3 &a, const vec3 &b);
