@@ -1,13 +1,15 @@
 #pragma once
 #include "primitive.h"
-struct plane : primitive
+#include "box.h"
+
+struct plane : intersectable
 {
 	ray3 plane_ray;
+	SDL_Color color;
 
 	plane(ray3 plane_ray, SDL_Color color);
 	~plane();
 
-	bool operator==(const primitive &o) override;
 	intersection get_intersection(const ray3 &ray) override;
 };
 

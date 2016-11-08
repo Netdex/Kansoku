@@ -7,7 +7,6 @@ class camera
 public:
 	const vec3 DOWN = vec3(0, -1, 0);
 	const bool RENDER_SHADOWS = true;
-	const float SHADOW_RENDER_EPSILON = 0.01;
 	const float FOV = 1.5f;
 
 	const int p_width;

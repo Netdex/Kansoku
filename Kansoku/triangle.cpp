@@ -1,5 +1,6 @@
 #include "triangle.h"
 #include <cmath>
+#include <algorithm>
 
 triangle::triangle(vec3 a, vec3 b, vec3 c, SDL_Color color) : primitive(color), a(a), b(b), c(c)
 {
@@ -42,4 +43,17 @@ intersection triangle::get_intersection(const ray3& r)
 	if (t < 0)
 		return intersection(r, r.pos, this, -1, color);
 	return intersection(r, r.get_point(t), this, t, color);
+}
+
+box triangle::get_bounds()
+{
+	vec3 min(INFINITY, INFINITY, INFINITY);
+	vec3 max(-INFINITY, -INFINITY, -INFINITY);
+	min.x = std::min(a.x, std::min(b.x, c.x));
+	min.y = std::min(a.y, std::min(b.y, c.y));
+	min.z = std::min(a.z, std::min(b.z, c.z));
+	max.x = std::max(a.x, std::max(b.x, c.x));
+	max.y = std::max(a.y, std::max(b.y, c.y));
+	max.z = std::max(a.z, std::max(b.z, c.z));
+	return box(min, max, { 0,0,0,0 });
 }

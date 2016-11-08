@@ -31,6 +31,12 @@
     <Filter Include="Header Files\primitive\impl">
       <UniqueIdentifier>{592ba08e-cbe8-46cb-b933-38ecd123c3fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\struct">
+      <UniqueIdentifier>{fa686db8-339f-4fb3-a9d1-224e0deb4aa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\struct">
+      <UniqueIdentifier>{f6ef2539-6b34-46e4-8a41-1da970d2412e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kansoku.cpp">
@@ -66,6 +72,9 @@
     <ClCompile Include="box.cpp">
       <Filter>Source Files\primitive\impl</Filter>
     </ClCompile>
+    <ClCompile Include="bvh_node.cpp">
+      <Filter>Source Files\struct</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
@@ -100,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="triangle.h">
       <Filter>Header Files\primitive\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="bvh_node.h">
+      <Filter>Header Files\struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

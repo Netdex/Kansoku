@@ -83,12 +83,20 @@ void handle_input(camera &c, const Uint8 *state)
 
 int main(int argc, char* argv[])
 {
+	// TODO BVH ray check
 	world w;
-	w.a_rectangle(vec3(-1, 1, 10), vec3(1, -1, 10), { 255, 255, 255, 255 });
+	
 	plane p(ray3(vec3(), vec3(0, -1, 0)), { 0, 255, 0, 255 });
 	w.intersects.push_back(&p);
-	box b(vec3(-10 + 20, -10 + 10, -10), vec3(10 + 20, 10 + 10, 10), { 255,0,0,255 });
-	w.intersects.push_back(&b);
+	for (int i = 0; i < 5; i++) {
+		box *a = new box(vec3(0 + i * 4, 0, 0), vec3(1 + i * 4,1,1), { 255,0,0,255 });
+		box *b = new box(vec3(2 + i * 4, 0, 0), vec3(3 + i * 4, 1, 1), { 255,0,0,255 });
+		box *c = new box(vec3(1 + i * 4, 1, 0), vec3(2 + i * 4, 5, 1), { 255,0,0,255 });
+		w.intersects.push_back(a);
+		w.intersects.push_back(b);
+		w.intersects.push_back(c);
+	}
+	
 
 	camera c(w, vec3(0, 0, 0), vec3(0, 0, 1), { 120, 120, 255, 255 },
 		PIXEL_WIDTH, PIXEL_HEIGHT, PIXEL_SIZE);
@@ -121,7 +129,7 @@ int main(int argc, char* argv[])
 		c.render(renderer);
 		clock_t end = clock();
 		double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-		printf("E%fs          \r", elapsed_secs);
+		printf("E%fms          \r", elapsed_secs * 1000);
 
 		SDL_RenderPresent(renderer);
 

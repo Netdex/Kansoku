@@ -1,18 +1,13 @@
 #include "plane.h"
 
 
-plane::plane(ray3 plane_ray, SDL_Color color) : primitive(color), plane_ray(plane_ray)
+
+plane::plane(ray3 plane_ray, SDL_Color color) : plane_ray(plane_ray), color(color)
 {
 }
 
 plane::~plane()
 {
-}
-
-bool plane::operator==(const primitive& o)
-{
-	// TODO
-	return false;
 }
 
 intersection plane::get_intersection(const ray3& r)

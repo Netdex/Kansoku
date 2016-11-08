@@ -1,13 +1,17 @@
 #include "box.h"
 #include "intersection.h"
+#include <algorithm>
 
 
-box::box(vec3 minbound, vec3 maxbound, SDL_Color color) : primitive(color)
+box::box(vec3 a, vec3 b, SDL_Color color) : primitive(color)
 {
-	bounds[0] = minbound;
-	bounds[1] = maxbound;
+	min = vec3(std::min(a.x, b.x), std::min(a.y, b.y), std::min(a.z, b.z));
+	max = vec3(std::max(a.x, b.x), std::max(a.y, b.y), std::max(a.z, b.z));
 }
 
+box::box(vec3 a, vec3 b) : box(a, b, {0,0,0,0})
+{
+}
 
 box::~box()
 {
@@ -17,7 +21,7 @@ bool box::operator==(const primitive& o)
 {
 	const box *op = dynamic_cast<const box*>(&o);
 	if (op)
-		return op->bounds[0] == bounds[0] && op->bounds[1] == bounds[1];
+		return op->min == min && op->max == max;
 	return false;
 }
 
@@ -27,37 +31,32 @@ int sgn(float x)
 	return 0;
 }
 
-intersection box::get_intersection(const ray3& r)
+intersection box::get_intersection(const ray3 &r)
 {
-	float tmin, tmax, tymin, tymax, tzmin, tzmax;
+	float tx1 = (min.x - r.pos.x) / r.dir.x;
+	float tx2 = (max.x - r.pos.x) / r.dir.x;
 
-	vec3 invdir = vec3(1 / r.dir.x, 1 / r.dir.y, 1 / r.dir.z);
-	int sign[] = { sgn(invdir.x), sgn(invdir.y), sgn(invdir.z) };
+	float tmin = std::min(tx1, tx2);
+	float tmax = std::max(tx1, tx2);
 
-	tmin = (bounds[sign[0]].x - r.pos.x) * invdir.x;
-	tmax = (bounds[1 - sign[0]].x - r.pos.x) * invdir.x;
-	tymin = (bounds[sign[1]].y - r.pos.y) * invdir.y;
-	tymax = (bounds[1 - sign[1]].y - r.pos.y) * invdir.y;
+	float ty1 = (min.y - r.pos.y) / r.dir.y;
+	float ty2 = (max.y - r.pos.y) / r.dir.y;
 
-	if ((tmin > tymax) || (tymin > tmax))
-		return intersection(r, r.pos, this, -1, this->color);
-	if (tymin > tmin)
-		tmin = tymin;
-	if (tymax < tmax)
-		tmax = tymax;
+	tmin = std::max(tmin, std::min(ty1, ty2));
+	tmax = std::min(tmax, std::max(ty1, ty2));
 
-	tzmin = (bounds[sign[2]].z - r.pos.z) * invdir.z;
-	tzmax = (bounds[1 - sign[2]].z - r.pos.z) * invdir.z;
+	float tz1 = (min.z - r.pos.z) / r.dir.z;
+	float tz2 = (max.z - r.pos.z) / r.dir.z;
 
-	if ((tmin > tzmax) || (tzmin > tmax))
-		return intersection(r, r.pos, this, -1, this->color);
-	if (tzmin > tmin)
-		tmin = tzmin;
-	if (tzmax < tmax)
-		tmax = tzmax;
-	
-	if (tmin < 0)
-		return intersection(r, r.pos, this, -1, this->color);
+	tmin = std::max(tmin, std::min(tz1, tz2));
+	tmax = std::min(tmax, std::max(tz1, tz2));
 
-	return intersection(r, r.get_point(tmin), this, tmin, this->color);
+	if (tmax >= tmin)
+		return intersection(r, r.get_point(tmin), this, tmin, this->color);
+	return intersection(r, r.pos, this, -1, this->color);
+}
+
+box box::get_bounds()
+{
+	return *this;
 }
