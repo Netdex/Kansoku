@@ -1,5 +1,6 @@
 # Kansoku
-Restructuring of old raytracer
+Kansoku is a rewrite of a real-time raytracer I wrote in Java a while ago.
 
-In all its pixely glory:
 ![alt](http://i.imgur.com/I6zQ3U4.png)
+
+Although fairly optimized, further optimizations could be done by using a bounded volume hierarchy to store objects.
