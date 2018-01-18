@@ -5,6 +5,6 @@ It uses a simple raytracing algorithm to project a three dimensional scene to a 
 
 [Video Demonstration](https://streamable.com/dmn0e)
 
-![alt](http://i.imgur.com/I6zQ3U4.png)
+![alt](https://i.imgur.com/XlWawSl.png)
 
 Although fairly optimized, further optimizations could be done by using a bounded volume hierarchy to store objects.
